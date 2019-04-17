@@ -6,7 +6,7 @@ This package provides an easy way to add rounded corner floating app bar in Flut
 ## Preview
 
 <p>
-    <img src="./preview/home.png" height="400" alt="Screenshot" raw="true"/>
+    <img src="./preview/preview.gif" height="400" alt="Screenshot" raw="true"/>
 </p>
 
 
