@@ -20,6 +20,15 @@ dependencies:
 import 'package:rounded_floating_app_bar/rounded_floating_app_bar.dart';
 ```
 
+3. Adding `RoundedFloatingAppBar` widget
+
+```dart
+RoundedFloatingAppBar(
+  floating: true,
+  snap: true,
+),
+```
+
 ## How to use
 
 **Check out the example app** in the [example](example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
