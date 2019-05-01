@@ -2,6 +2,15 @@
 
 A Flutter application demonstrate the use of rounded floating app bar package.
 
+# Running the app
+
+## Get packages
+```dart
+flutter packages get
+```
+## Run the app
+`flutter run`
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
