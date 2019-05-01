@@ -4,79 +4,25 @@ Rounded floating app bar like new google applications has.
 This package provides an easy way to add rounded corner floating app bar in Flutter project.
 
 ## Preview
+<img src="./preview/preview.gif" height="400" alt="Screenshot" raw="true"/>
 
-<p>
-    <img src="./preview/preview.gif" height="400" alt="Screenshot" raw="true"/>
-</p>
+## Installing
+1. Add dependency to `pubspec.yaml`
 
+    *Get the latest version in the 'Installing' tab on pub.dartlang.org*
+    
+```dart
+dependencies:
+    rounded_floating_app_bar: 0.1.0
+```
+2. Import the package
+```dart
+import 'package:rounded_floating_app_bar/rounded_floating_app_bar.dart';
+```
 
 ## How to use
 
-```dart
-import 'package:rounded_floating_app_bar/rounded_floating_app_bar.dart';
-
-```
-
-```dart
-NestedScrollView(
-  headerSliverBuilder: (context, isInnerBoxScroll) {
-    return [
-      RoundedFloatingAppBar(
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.video_call),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: CircleAvatar(
-              child: FlutterLogo(
-                size: 18,
-              ),
-              backgroundColor: Colors.red,
-            ),
-            onPressed: () {},
-          ),
-        ],
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-        textTheme: TextTheme(
-          title: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        floating: true,
-        snap: true,
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            FlutterLogo(),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Text(
-                "Youtube",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.white,
-      ),
-    ];
-  },
-  body: ListView.builder(
-    itemBuilder: (_, i) => ListTile(
-          title: Text("Title $i"),
-        ),
-  ),
-);
-
-```
+**Check out the example app** in the [example](example) directory or the 'Example' tab on pub.dartlang.org for a more complete example.
 
 ## Getting Started
 
