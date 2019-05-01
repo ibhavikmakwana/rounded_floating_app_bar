@@ -1,4 +1,4 @@
-# example
+# Rounded Floating AppBar example
 
 A Flutter application demonstrate the use of rounded floating app bar package.
 
