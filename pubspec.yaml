@@ -1,6 +1,6 @@
 name: rounded_floating_app_bar
 description: A package provides an easy way to add rounded corner floating app bar in Flutter project.
-version: 0.0.2
+version: 0.1.0
 author: Bhavik Makwana <ibhavikmakwana@gmail.com>
 homepage: https://github.com/ibhavikmakwana/rounded_floating_app_bar
 
