@@ -11,7 +11,7 @@ class RoundedFloatingAppBar extends StatefulWidget {
   /// The arguments [forceElevated], [primary], [floating], [pinned], [snap]
   /// and [automaticallyImplyLeading] must not be null.
   const RoundedFloatingAppBar({
-    Key key,
+    Key? key,
     this.leading,
     this.automaticallyImplyLeading = true,
     this.title,
@@ -24,12 +24,8 @@ class RoundedFloatingAppBar extends StatefulWidget {
     this.pinned = false,
     this.snap = false,
     this.actions,
-  })  : assert(automaticallyImplyLeading != null),
-        assert(floating != null),
-        assert(pinned != null),
-        assert(snap != null),
-        assert(floating || !snap,
-        'The "snap" argument only makes sense for floating app bars.'),
+  })  : assert(floating || !snap,
+            'The "snap" argument only makes sense for floating app bars.'),
         super(key: key);
 
   /// A widget to display before the [title].
@@ -40,7 +36,7 @@ class RoundedFloatingAppBar extends StatefulWidget {
   /// [IconButton] that opens the drawer. If there's no [Drawer] and the parent
   /// [Navigator] can go back, the [AppBar] will use a [BackButton] that calls
   /// [Navigator.maybePop].
-  final Widget leading;
+  final Widget? leading;
 
   /// Controls whether we should try to imply the leading widget if null.
   ///
@@ -53,21 +49,21 @@ class RoundedFloatingAppBar extends StatefulWidget {
   ///
   /// Typically a [Text] widget containing a description of the current contents
   /// of the app.
-  final Widget title;
+  final Widget? title;
 
-  final Widget trailing;
+  final Widget? trailing;
 
   /// The color, opacity, and size to use for app bar icons. Typically this
   /// is set along with [backgroundColor], [brightness], [textTheme].
   ///
   /// Defaults to [ThemeData.primaryIconTheme].
-  final IconThemeData iconTheme;
+  final IconThemeData? iconTheme;
 
   /// The typographic styles to use for text in the app bar. Typically this is
   /// set along with [brightness] [backgroundColor], [iconTheme].
   ///
   /// Defaults to [ThemeData.primaryTextTheme].
-  final TextTheme textTheme;
+  final TextTheme? textTheme;
 
   /// The z-coordinate at which to place this app bar when it is above other
   /// content. This controls the size of the shadow below the app bar.
@@ -84,7 +80,7 @@ class RoundedFloatingAppBar extends StatefulWidget {
   /// along with [brightness], [iconTheme], [textTheme].
   ///
   /// Defaults to [ThemeData.primaryColor].
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// Whether the app bar should become visible as soon as the user scrolls
   /// towards the app bar.
@@ -114,7 +110,7 @@ class RoundedFloatingAppBar extends StatefulWidget {
   /// Snapping only applies when the app bar is floating, not when the appbar
   /// appears at the top of its scroll view.
   final bool snap;
-  final List<Widget> actions;
+  final List<Widget>? actions;
 
   @override
   _RoundedFloatingAppBarState createState() => _RoundedFloatingAppBarState();
@@ -122,12 +118,11 @@ class RoundedFloatingAppBar extends StatefulWidget {
 
 class _RoundedFloatingAppBarState extends State<RoundedFloatingAppBar>
     with TickerProviderStateMixin {
-  FloatingHeaderSnapConfiguration _snapConfiguration;
+  FloatingHeaderSnapConfiguration? _snapConfiguration;
 
   void _updateSnapConfiguration() {
     if (widget.snap && widget.floating) {
       _snapConfiguration = FloatingHeaderSnapConfiguration(
-        vsync: this,
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 200),
       );
@@ -146,15 +141,17 @@ class _RoundedFloatingAppBarState extends State<RoundedFloatingAppBar>
   @override
   void didUpdateWidget(RoundedFloatingAppBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.snap != oldWidget.snap || widget.floating != oldWidget.floating)
+    if (widget.snap != oldWidget.snap ||
+        widget.floating != oldWidget.floating) {
       _updateSnapConfiguration();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final double topPadding = MediaQuery.of(context).padding.top;
-    final double collapsedHeight =
-    (widget.pinned && widget.floating) ? topPadding : null;
+    final double? collapsedHeight =
+        (widget.pinned && widget.floating) ? topPadding : null;
 
     return MediaQuery.removePadding(
       context: context,
@@ -177,6 +174,7 @@ class _RoundedFloatingAppBarState extends State<RoundedFloatingAppBar>
           snapConfiguration: _snapConfiguration,
           collapsedHeight: collapsedHeight,
           topPadding: topPadding,
+          vsyncValue: this,
         ),
       ),
     );
@@ -184,9 +182,9 @@ class _RoundedFloatingAppBarState extends State<RoundedFloatingAppBar>
 }
 
 class _FloatingAppBar extends StatefulWidget {
-  const _FloatingAppBar({Key key, this.child}) : super(key: key);
+  const _FloatingAppBar({Key? key, this.child}) : super(key: key);
 
-  final Widget child;
+  final Widget? child;
 
   @override
   _FloatingAppBarState createState() => _FloatingAppBarState();
@@ -195,28 +193,31 @@ class _FloatingAppBar extends StatefulWidget {
 // A wrapper for the widget created by _SliverAppBarDelegate that starts and
 /// stops the floating appbar's snap-into-view or snap-out-of-view animation.
 class _FloatingAppBarState extends State<_FloatingAppBar> {
-  ScrollPosition _position;
+  ScrollPosition? _position;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_position != null)
-      _position.isScrollingNotifier.removeListener(_isScrollingListener);
+    if (_position != null) {
+      _position!.isScrollingNotifier.removeListener(_isScrollingListener);
+    }
     _position = Scrollable.of(context)?.position;
-    if (_position != null)
-      _position.isScrollingNotifier.addListener(_isScrollingListener);
+    if (_position != null) {
+      _position!.isScrollingNotifier.addListener(_isScrollingListener);
+    }
   }
 
   @override
   void dispose() {
-    if (_position != null)
-      _position.isScrollingNotifier.removeListener(_isScrollingListener);
+    if (_position != null) {
+      _position!.isScrollingNotifier.removeListener(_isScrollingListener);
+    }
     super.dispose();
   }
 
-  RenderSliverFloatingPersistentHeader _headerRenderer() {
-    return context.ancestorRenderObjectOfType(
-        const TypeMatcher<RenderSliverFloatingPersistentHeader>());
+  RenderSliverFloatingPersistentHeader? _headerRenderer() {
+    return context
+        .findAncestorRenderObjectOfType<RenderSliverFloatingPersistentHeader>();
   }
 
   void _isScrollingListener() {
@@ -224,54 +225,57 @@ class _FloatingAppBarState extends State<_FloatingAppBar> {
 
     // When a scroll stops, then maybe snap the appbar into view.
     // Similarly, when a scroll starts, then maybe stop the snap animation.
-    final RenderSliverFloatingPersistentHeader header = _headerRenderer();
-    if (_position.isScrollingNotifier.value)
-      header?.maybeStopSnapAnimation(_position.userScrollDirection);
-    else
-      header?.maybeStartSnapAnimation(_position.userScrollDirection);
+    final RenderSliverFloatingPersistentHeader? header = _headerRenderer();
+    if (_position!.isScrollingNotifier.value) {
+      header?.maybeStopSnapAnimation(_position!.userScrollDirection);
+    } else {
+      header?.maybeStartSnapAnimation(_position!.userScrollDirection);
+    }
   }
 
   @override
-  Widget build(BuildContext context) => widget.child;
+  Widget build(BuildContext context) => widget.child!;
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
-    @required this.leading,
-    @required this.automaticallyImplyLeading,
-    @required this.title,
-    @required this.trailing,
-    @required this.elevation,
-    @required this.actions,
-    @required this.iconTheme,
-    @required this.textTheme,
-    @required this.backgroundColor,
-    @required this.floating,
-    @required this.pinned,
-    @required this.snapConfiguration,
-    @required this.collapsedHeight,
-    @required this.topPadding,
+    required this.leading,
+    required this.automaticallyImplyLeading,
+    required this.title,
+    required this.trailing,
+    required this.elevation,
+    required this.actions,
+    required this.iconTheme,
+    required this.textTheme,
+    required this.backgroundColor,
+    required this.floating,
+    required this.pinned,
+    required this.snapConfiguration,
+    required this.collapsedHeight,
+    required this.topPadding,
+    required this.vsyncValue,
   });
 
-  final Widget trailing;
+  final Widget? trailing;
   final bool automaticallyImplyLeading;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final double elevation;
   final bool floating;
-  final List<Widget> actions;
-  final IconThemeData iconTheme;
-  final TextTheme textTheme;
-  final Widget leading;
+  final List<Widget>? actions;
+  final IconThemeData? iconTheme;
+  final TextTheme? textTheme;
+  final Widget? leading;
   final bool pinned;
-  final Widget title;
-  final double collapsedHeight;
+  final Widget? title;
+  final double? collapsedHeight;
   final double topPadding;
+  final TickerProvider vsyncValue;
 
   @override
   double get minExtent => collapsedHeight ?? (topPadding + kToolbarHeight);
 
   @override
-  final FloatingHeaderSnapConfiguration snapConfiguration;
+  final FloatingHeaderSnapConfiguration? snapConfiguration;
 
   @override
   double get maxExtent => math.max(topPadding + (kToolbarHeight), minExtent);
@@ -292,6 +296,11 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         pinned != oldDelegate.pinned ||
         floating != oldDelegate.floating ||
         snapConfiguration != oldDelegate.snapConfiguration;
+  }
+
+  @override
+  TickerProvider get vsync {
+    return vsyncValue;
   }
 
   @override
@@ -325,7 +334,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       currentExtent: math.max(minExtent, maxExtent - shrinkOffset),
       toolbarOpacity: toolbarOpacity,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: SafeArea(
           child: Material(
             color: backgroundColor,
@@ -335,19 +344,19 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
               leading: leading ??
                   (Scaffold.of(context).hasDrawer && automaticallyImplyLeading
                       ? IconButton(
-                    icon: Icon(Icons.menu),
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                  )
+                          icon: const Icon(Icons.menu),
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                        )
                       : null),
               title: title,
               trailing: actions != null
                   ? Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: actions,
-              )
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: actions!,
+                    )
                   : null,
             ),
           ),

@@ -10,7 +10,7 @@ This package provides an easy way to add rounded corner floating app bar in Flut
 1. Add dependency to `pubspec.yaml`
 
     *Get the latest version in the 'Installing' tab on pub.dartlang.org*
-    
+
 ```dart
 dependencies:
     rounded_floating_app_bar: 0.1.0
